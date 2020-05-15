@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
 
   // timer
   void _timer() {
-    Future.delayed(Duration(seconds: 6)).then((_) {
+    Future.delayed(Duration(seconds: 3)).then((_) {
       setState(() {
         getSuhu();
       });
@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
     Response response =
         await get('http://ikhsanthohir.id/suhu/suhu_sekrang.php');
     Map suhu = jsonDecode(response.body);
-    print(suhu);
+    // print(suhu);
     setState(() {
       suhusekarang = suhu['suhu'];
     });
@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     getSuhu();
-    // _timer();
+    _timer();
   }
 
   @override

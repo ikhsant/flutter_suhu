@@ -27,47 +27,47 @@ class _LaporanTableState extends State<LaporanTable> {
           rows: [
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:00')),
-              DataCell(Text('35')),
+              DataCell(Text('28')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:05')),
-              DataCell(Text('37')),
+              DataCell(Text('25')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:10')),
-              DataCell(Text('36')),
+              DataCell(Text('26')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:15')),
-              DataCell(Text('36')),
+              DataCell(Text('26')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:20')),
-              DataCell(Text('35')),
+              DataCell(Text('26')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:25')),
-              DataCell(Text('36')),
+              DataCell(Text('30')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:30')),
-              DataCell(Text('36')),
+              DataCell(Text('26')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:35')),
-              DataCell(Text('38')),
+              DataCell(Text('26')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:40')),
-              DataCell(Text('36')),
+              DataCell(Text('27')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:45')),
-              DataCell(Text('37')),
+              DataCell(Text('26')),
             ]),
             DataRow(cells: [
               DataCell(Text('2020-04-31 13:50')),
-              DataCell(Text('36')),
+              DataCell(Text('26')),
             ]),
           ],
         ),

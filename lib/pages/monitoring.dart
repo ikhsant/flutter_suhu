@@ -1,75 +1,96 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class Monitoring extends StatefulWidget {
   @override
-  _MonitoringState createState() => _MonitoringState();
+  _MonitoringPageState createState() => new _MonitoringPageState();
 }
 
-class _MonitoringState extends State<Monitoring> {
+class _MonitoringPageState extends State<Monitoring> {
+  List data;
+  Timer timer;
+
+  makeRequest() async {
+    var response = await http.get(
+      'http://ikhsanthohir.id/suhu/suhu_chart.php',
+      headers: {'Accept': 'application/json'},
+    );
+
+    setState(() {
+      data = json.decode(response.body);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // makeRequest();
+    timer = new Timer.periodic(new Duration(seconds: 2), (t) => makeRequest());
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Monitoring'),
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Monitoring'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(10.0, 100.0, 10.0, 100.0),
-        child: PointsLineChart(
-          _createSampleData(),
-          // Disable animations for image tests.
-          animate: true,
-        ),
-      ),
+      body: data == null ? CircularProgressIndicator() : createChart(),
     );
   }
-}
 
-class PointsLineChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
-
-  PointsLineChart(this.seriesList, {this.animate});
-  
-  @override
-  Widget build(BuildContext context) {
-    return new charts.BarChart(
-      seriesList,
-      animate: animate,
-    );
-  }
-}
-
-/// Create one series with sample hard coded data.
-List<charts.Series<DataSuhu, String>> _createSampleData() {
-  final data = [
-    new DataSuhu('13:05', 34),
-    new DataSuhu('13:06', 36),
-    new DataSuhu('13:07', 34),
-    new DataSuhu('13:08', 37),
-    new DataSuhu('13:09', 34),
-    new DataSuhu('13:10', 37),
-    new DataSuhu('13:11', 34),
-    new DataSuhu('13:12', 36),
-    new DataSuhu('13:13', 34),
-    new DataSuhu('13:14', 36),
-  ];
-
-  return [
-    new charts.Series<DataSuhu, String>(
-      id: 'Suhu',
+  charts.Series<LiveWerkzeuge, String> createSeries(
+      String id, int i, String tanggal) {
+    return charts.Series<LiveWerkzeuge, String>(
+      id: id,
+      domainFn: (LiveWerkzeuge wear, _) => wear.wsp,
+      measureFn: (LiveWerkzeuge wear, _) => wear.belastung,
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-      domainFn: (DataSuhu suhu, _) => suhu.tanggal,
-      measureFn: (DataSuhu suhu, _) => suhu.suhu,
-      data: data,
-    )
-  ];
+      data: [
+        LiveWerkzeuge(tanggal, data[i]['suhu']),
+      ],
+    );
+  }
+
+  Widget createChart() {
+
+    List<charts.Series<LiveWerkzeuge, String>> seriesList = [];
+
+    for (int i = 0; i < data.length; i++) {
+      String id = 'WZG${i + 1}';
+
+      // get tanggal
+      // DateTime tanggal_terakhir = DateTime.parse(data[i]['tanggal']);
+      // String tanggal = DateFormat('s').format(tanggal_terakhir);
+      String tanggal = 'Suhu dalam Celcius';
+
+      seriesList.add(createSeries(id, i, tanggal));
+    }
+
+    // print(data);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0,50.0,0.0,20.0),
+      child: new charts.BarChart(
+        seriesList,
+        // barGroupingType: charts.BarGroupingType.grouped,
+      ),
+    );
+  }
 }
 
-/// Sample Data.
-class DataSuhu {
-  final String tanggal;
-  final int suhu;
+class LiveWerkzeuge {
+  final String wsp;
+  final int belastung;
 
-  DataSuhu(this.tanggal, this.suhu);
+  LiveWerkzeuge(this.wsp, this.belastung);
 }

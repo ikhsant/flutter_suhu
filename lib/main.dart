@@ -7,7 +7,8 @@ import 'pages/laporan.dart';
 import 'pages/laporan_table.dart';
 
 void main() => runApp(MaterialApp(
-  initialRoute: '/login',
+  debugShowCheckedModeBanner: false,
+  initialRoute: '/home',
   routes: {
     '/home' : (context) => Home(),
     '/about' : (context) => About(),

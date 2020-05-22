@@ -92,7 +92,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 10.0),
                 Text(
-                  'Aplikasi Pendeteksi Suhu @Rasbery-Pi',
+                  'SmartFarm @Rasbery-Pi',
                   style: TextStyle(
                     fontSize: 20.0,
                     letterSpacing: 2.0,

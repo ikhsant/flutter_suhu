@@ -22,7 +22,7 @@ class _LaporanTableState extends State<LaporanTable> {
         DataTable(
           columns: [
             DataColumn(label: Text('Tanggal')),
-            DataColumn(label: Text('Suhu')),
+            DataColumn(label: Text('Kadar Air')),
           ],
           rows: [
             DataRow(cells: [

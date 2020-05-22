@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 
@@ -9,33 +8,62 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String gambar = 'assets/flower2.png';
   String suhusekarang = '';
+  String statusAir = '';
+  int kadarairsekarang;
 
   // timer
   void _timer() {
     Future.delayed(Duration(seconds: 3)).then((_) {
       setState(() {
-        getSuhu();
+        // getSuhu();
+        getKadarAir();
       });
       _timer();
     });
   }
 
   // get suhu
-  void getSuhu() async {
+  // void getSuhu() async {
+  //   Response response =
+  //       await get('http://ikhsanthohir.id/suhu/suhu_sekarang.php');
+  //   Map suhu = jsonDecode(response.body);
+  //   // print(suhu);
+  //   setState(() {
+  //     suhusekarang = suhu['suhu'];
+  //   });
+  // }
+
+  // get kadar Air
+  void getKadarAir() async {
     Response response =
-        await get('http://ikhsanthohir.id/suhu/suhu_sekrang.php');
-    Map suhu = jsonDecode(response.body);
+        await get('http://ikhsanthohir.id/suhu/kadarair_sekarang.php');
+    Map kadarair = jsonDecode(response.body);
     // print(suhu);
     setState(() {
-      suhusekarang = suhu['suhu'];
+      kadarairsekarang = int.parse(kadarair['kadarair']);
+      if (kadarairsekarang < 40) {
+        _showAlert(context);
+        gambar = 'assets/flower1.png';
+        statusAir = 'Tanaman Kurang Air';
+      } else {
+        gambar = 'assets/flower2.png';
+        statusAir = 'Tanaman Cukup Air';
+      }
     });
+  }
+
+  void siramTanaman() async {
+    Response response = await get('http://ikhsanthohir.id/suhu/siram_tanaman.php');
+    _showSuksesSiram(context);
   }
 
   @override
   void initState() {
     super.initState();
-    getSuhu();
+    // getSuhu();
+    getKadarAir();
     _timer();
   }
 
@@ -53,25 +81,42 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Container(),
             SizedBox(height: 50.0),
-             Image(
-                  image: AssetImage('assets/suhu.png'),
-                  height: 50.0,
-                ),
+            Image(
+              image: AssetImage(gambar),
+              height: 150.0,
+            ),
             SizedBox(height: 10.0),
             Text(
-              'Suhu saat ini',
+              '$kadarairsekarang%',
+              style: TextStyle(
+                fontSize: 50.0,
+                letterSpacing: 2.0,
+              ),
+            ),
+            Text(
+              'Kadar Air',
+              style: TextStyle(
+                fontSize: 14.0,
+              ),
+            ),
+            SizedBox(height: 14.0),
+            Text(
+              statusAir,
               style: TextStyle(
                 fontSize: 20.0,
               ),
             ),
-            Text(
-              '$suhusekarang',
-              style: TextStyle(
-                fontSize: 120.0,
-                letterSpacing: 2.0,
-              ),
+            SizedBox(height: 20.0),
+            RaisedButton.icon(
+              onPressed: () {
+                _showSiramTanaman(context);
+              },
+              label: Text('Siram tanaman'),
+              icon: Icon(Icons.local_florist),
+              color: Colors.purple,
+              textColor: Colors.white,
             ),
-            SizedBox(height: 50.0),
+            SizedBox(width: 10.0),
             RaisedButton.icon(
               onPressed: () {
                 Navigator.pushNamed(context, '/monitoring');
@@ -82,7 +127,7 @@ class _HomeState extends State<Home> {
               textColor: Colors.white,
             ),
             SizedBox(
-              width: 20.0,
+              width: 10.0,
             ),
             RaisedButton.icon(
               onPressed: () {
@@ -94,7 +139,7 @@ class _HomeState extends State<Home> {
               icon: Icon(Icons.print),
             ),
             SizedBox(
-              width: 20.0,
+              width: 10.0,
             ),
             RaisedButton.icon(
               onPressed: () {
@@ -111,6 +156,7 @@ class _HomeState extends State<Home> {
             RaisedButton.icon(
               onPressed: () {
                 Navigator.pushReplacementNamed(context, '/login');
+                // _showAlert(context);
               },
               color: Colors.red,
               textColor: Colors.white,
@@ -121,5 +167,51 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  void _showAlert(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Tanaman Kurang Air"),
+              content: Text("Tanaman kekurangan Air. Segera siram tanaman"),
+            ));
+  }
+
+  void _showSuksesSiram(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Berhasil"),
+              content: Text(
+                  "Perintah siram telah berhasil di kirim, tunggu hingga kadar air berubah"),
+            ));
+  }
+
+  void _showSiramTanaman(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text("Siram Tanaman"),
+              content: Text(
+                  "Tanaman Akan disiram otomatis oleh aplikasi, butuh waktu beberapa saat untuk status kadar air berubah"),
+              actions: <Widget>[
+                FlatButton.icon(
+                  icon: Icon(Icons.local_florist),
+                  label: Text("SIRAM"),
+                  onPressed: () {
+                    siramTanaman();
+                  },
+                )
+              ],
+            ));
+  }
+
+  getStatusAir(int kadarair) {
+    if (kadarair > 50) {
+      return 'Tanaman Cukup Air';
+    } else {
+      return 'Tanaman Kurang Air';
+    }
   }
 }

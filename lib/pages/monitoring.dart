@@ -16,7 +16,7 @@ class _MonitoringPageState extends State<Monitoring> {
 
   makeRequest() async {
     var response = await http.get(
-      'http://ikhsanthohir.id/suhu/suhu_chart.php',
+      'http://ikhsanthohir.id/suhu/kadarair_chart.php',
       headers: {'Accept': 'application/json'},
     );
 
@@ -56,7 +56,7 @@ class _MonitoringPageState extends State<Monitoring> {
       measureFn: (LiveWerkzeuge wear, _) => wear.belastung,
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
       data: [
-        LiveWerkzeuge(tanggal, data[i]['suhu']),
+        LiveWerkzeuge(tanggal, data[i]['kadarair']),
       ],
     );
   }
@@ -71,7 +71,7 @@ class _MonitoringPageState extends State<Monitoring> {
       // get tanggal
       // DateTime tanggal_terakhir = DateTime.parse(data[i]['tanggal']);
       // String tanggal = DateFormat('s').format(tanggal_terakhir);
-      String tanggal = 'Suhu dalam Celcius';
+      String tanggal = 'Monitor Kadar Air tanaman dalam Persen';
 
       seriesList.add(createSeries(id, i, tanggal));
     }

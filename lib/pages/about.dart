@@ -22,7 +22,7 @@ class _AboutState extends State<About> {
             ),
             SizedBox(height: 10.0),
             Text(
-              'Aplikasi Pendeteksi Suhu @Rasbery-Pi',
+              'SmartFarm @Rasbery-Pi',
               style: TextStyle(
                 fontSize: 20.0,
                 letterSpacing: 2.0,
@@ -31,7 +31,7 @@ class _AboutState extends State<About> {
             ),
             SizedBox(height: 50.0),
             Text(
-              'Kelompok 2:',
+              'Kelompok 4:',
               style: TextStyle(
                 fontSize: 20.0,
                 letterSpacing: 2.0,
@@ -48,7 +48,7 @@ class _AboutState extends State<About> {
               textAlign: TextAlign.center,
             ),
             Text(
-              'Princi Sabri',
+              'Princi Sobri',
               style: TextStyle(
                 fontSize: 20.0,
               ),
@@ -61,21 +61,7 @@ class _AboutState extends State<About> {
               ),
               textAlign: TextAlign.center,
             ),
-            Text(
-              'Kamdan',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              'Ivana Luciana',
-              style: TextStyle(
-                fontSize: 20.0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            
+
           ],
         ),
       ),

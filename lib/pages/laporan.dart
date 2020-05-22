@@ -111,10 +111,10 @@ class _LaporanState extends State<Laporan> {
             SizedBox(height: 10.0),
             RaisedButton.icon(
               onPressed: () {
-                // Navigator.pushNamed(context, '/laporan_table');
-                print(_mulaiController.text);
-                print(_selesaiController.text);
-                _futureSuhu = getLaporan(_mulaiController.text,_selesaiController.text);
+                Navigator.pushNamed(context, '/laporan_table');
+                // print(_mulaiController.text);
+                // print(_selesaiController.text);
+                // _futureSuhu = getLaporan(_mulaiController.text,_selesaiController.text);
               },
               icon: Icon(Icons.send),
               label: Text('Proses'),
@@ -125,7 +125,7 @@ class _LaporanState extends State<Laporan> {
               ? Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('kosong'),
+                    // Text('kosong'),
                   ],
                 )
               : FutureBuilder<Suhu>(
@@ -146,3 +146,4 @@ class _LaporanState extends State<Laporan> {
     );
   }
 }
+
